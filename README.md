@@ -1,3 +1,5 @@
+A recruitement task for inewi (https://inewi.pl/)
+
 LIVE DEMO:
 https://bars99.github.io/inewi_task/
 
