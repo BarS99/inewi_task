@@ -43,7 +43,7 @@ function App() {
       <RecoilRoot>
         <div className="App">
           <Routes>
-            <Route path="/inewi_task" element={<LayoutBasic />}>
+            <Route path="/" element={<LayoutBasic />}>
               <Route path="" element={<Index />} />
               <Route path="/to-watch" element={<ToWatch />} />
               <Route path="/favorite" element={<Favorite />} />
