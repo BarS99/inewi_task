@@ -1,18 +1,7 @@
-/** @jsxImportSource theme-ui */
-import React from "react";
-import { Container, Message } from "theme-ui";
+import Error from "../components/Error";
 
 const Page404 = () => {
-  return (
-    <Container
-      sx={{
-        variant: "container.md",
-      }}
-      p={4}
-    >
-      <Message variant="message.primary">404 not found!</Message>
-    </Container>
-  );
+  return <Error message="404 not found!" size="md" />;
 };
 
 export default Page404;

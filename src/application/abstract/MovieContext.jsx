@@ -53,6 +53,18 @@ export const genreListState = atom({
   default: [],
 });
 
+export const genreListSelector = selector({
+  key: "genreListSelector",
+  get: ({ get }) => {
+    const result = get(genreListState);
+
+    return result;
+  },
+  set: ({ set }, value) => {
+    set(genreListState, value);
+  },
+});
+
 const setLocalStorage =
   (key) =>
   ({ onSet, setSelf }) => {
@@ -71,8 +83,32 @@ export const favoriteListState = atom({
   effects: [setLocalStorage("favorite")],
 });
 
+export const favoriteListSelector = selector({
+  key: "favoriteListSelector",
+  get: ({ get }) => {
+    const result = get(favoriteListState);
+
+    return result;
+  },
+  set: ({ set }, value) => {
+    set(favoriteListState, value);
+  },
+});
+
 export const toWatchListState = atom({
   key: "toWatchListState",
   default: [],
   effects: [setLocalStorage("toWatch")],
+});
+
+export const toWatchListSelector = selector({
+  key: "toWatchListSelector",
+  get: ({ get }) => {
+    const result = get(toWatchListState);
+
+    return result;
+  },
+  set: ({ set }, value) => {
+    set(toWatchListState, value);
+  },
 });

@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Message } from "theme-ui";
 
-const Error = ({ message }) => {
+const Error = ({ message, size }) => {
   return (
     <Container
       sx={{
-        variant: "container.full",
+        variant: size ? `container.${size}` : "container.full",
       }}
       p={4}
     >

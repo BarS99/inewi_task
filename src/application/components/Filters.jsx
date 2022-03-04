@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Label, Select, Box, Container, Grid, Heading, Button } from "theme-ui";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
-  genreListState,
+  genreListSelector,
   movieListFiltersSelector,
 } from "../abstract/MovieContext";
 import { API } from "../../static/config";
@@ -21,7 +21,7 @@ const generateYears = (start, end) => {
 
 const Filters = () => {
   const setMovieListFilters = useSetRecoilState(movieListFiltersSelector);
-  const [genreList, setGenreList] = useRecoilState(genreListState);
+  const [genreList, setGenreList] = useRecoilState(genreListSelector);
   const { data } = useFetch(`${API.url}/3/genre/movie/list?api_key=${API.key}`);
 
   const [genre, setGenre] = useState("");

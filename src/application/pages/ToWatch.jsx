@@ -1,8 +1,9 @@
 /** @jsxImportSource theme-ui */
 import { useRecoilValue } from "recoil";
-import { Message, Container, Heading } from "theme-ui";
+import { Container, Heading } from "theme-ui";
 import { toWatchListState } from "../abstract/MovieContext";
 import MediaList from "../components/MediaList";
+import Error from "../components/Error";
 
 const ToWatch = () => {
   const list = useRecoilValue(toWatchListState);
@@ -22,9 +23,7 @@ const ToWatch = () => {
       {list?.length ? (
         <MediaList list={list} />
       ) : (
-        <Container p={4} sx={{ variant: "container.md" }}>
-          <Message variant="message.primary">The list is empty!</Message>
-        </Container>
+        <Error message="The list is empty!" size="md" />
       )}
     </>
   );

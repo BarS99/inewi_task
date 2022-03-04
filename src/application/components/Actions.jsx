@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import { Button, Flex } from "theme-ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTv } from "@fortawesome/free-solid-svg-icons";
-import { favoriteListState, toWatchListState } from "../abstract/MovieContext";
+import {
+  favoriteListSelector,
+  toWatchListSelector,
+} from "../abstract/MovieContext";
 import { useRecoilState } from "recoil";
 
 const Actions = ({ item }) => {
-  const [favoriteList, setFavoriteList] = useRecoilState(favoriteListState);
-  const [toWatchList, setToWatchList] = useRecoilState(toWatchListState);
+  const [favoriteList, setFavoriteList] = useRecoilState(favoriteListSelector);
+  const [toWatchList, setToWatchList] = useRecoilState(toWatchListSelector);
   const [favoriteActive, setFavoriteActive] = useState(false);
   const [toWatchActive, setToWatchActive] = useState(false);
 

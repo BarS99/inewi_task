@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Container, Box, Heading, Grid, Spinner, Flex } from "theme-ui";
+import { Container, Box, Heading, Grid, Spinner, Flex, Button } from "theme-ui";
 import MediaList from "../components/MediaList";
 import Error from "./Error";
 import Sort from "./Sort";
 
-const MediaSection = ({ list, title, loading, error }) => {
+const MediaSection = ({ list, title, loading, error, incrementPagination }) => {
   return (
     <Box as="section">
       <Container
@@ -33,7 +33,24 @@ const MediaSection = ({ list, title, loading, error }) => {
         }}
       >
         {list?.length > 0 && !loading && (
-          <MediaList list={list} title="Trending now" />
+          <>
+            <MediaList list={list} title="Trending now" />
+            <Box
+              pb={4}
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              <Button
+                p={2}
+                sx={{
+                  variant: "buttons.primary",
+                }}
+              >
+                Load more
+              </Button>
+            </Box>
+          </>
         )}
 
         {loading && (

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { API } from "../../static/config";
 import { Container, Image, Box } from "theme-ui";
 import image576 from "../../static/images/mainpage_576.jpg";
@@ -19,9 +19,16 @@ const Index = () => {
   const [movieList, setMovieList] = useRecoilState(movieListState);
   const filters = useRecoilValue(movieListFiltersSelector);
   const sort = useRecoilValue(movieListSortSelector);
-  const { data, loading, error } = useFetch(
+  const [pagination, setPagination] = useState(1);
+  const { data, loading, error, triggerFetch } = useFetch(
     `${API.url}/3/discover/movie?api_key=${API.key}&${filters}&${sort}`
   );
+
+  const incrementPagination = () => {
+    setPagination((prev) => {
+      return prev++;
+    });
+  };
 
   useEffect(() => {
     if (data) {
