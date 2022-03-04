@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Link } from "react-router-dom";
 import { Box, Flex, Image } from "theme-ui";
-import { API } from "../../static/API";
+import { API } from "../../static/config";
 import thumbnail from "../../static/images/thumbnail.jpg";
 
 const Autocomplete = ({ list }) => {

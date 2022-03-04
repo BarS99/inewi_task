@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Box, Image, Heading, Paragraph } from "theme-ui";
 import { Link } from "react-router-dom";
-import { API } from "../../static/API";
+import { API } from "../../static/config";
 import thumbnail from "../../static/images/thumbnail.jpg";
 import Actions from "./Actions";
 

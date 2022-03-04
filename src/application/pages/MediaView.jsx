@@ -13,7 +13,7 @@ import {
   Spinner,
   Message,
 } from "theme-ui";
-import { API } from "../../static/API";
+import { API } from "../../static/config";
 import thumbnail from "../../static/images/thumbnail.jpg";
 import { Flex } from "theme-ui";
 import Score from "../components/Score";

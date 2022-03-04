@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { useState, useEffect } from "react";
 import { Box, Label, Input } from "theme-ui";
-import { API } from "../../static/API";
+import { API } from "../../static/config";
 import Autocomplete from "./Autocomplete";
 
 const SearchEngine = () => {

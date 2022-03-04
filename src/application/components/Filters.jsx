@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Label, Select, Box, Container, Grid, Heading, Button } from "theme-ui";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { genreListState, movieListState } from "../abstract/MovieContext";
-import { API } from "../../static/API";
+import { API } from "../../static/config";
 
 const generateYears = (start, end) => {
   const years = [];

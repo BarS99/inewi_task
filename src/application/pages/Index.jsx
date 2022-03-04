@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { useEffect, useState } from "react";
-import { API } from "../../static/API";
+import { API } from "../../static/config";
 import { Container, Image, Box } from "theme-ui";
 import image576 from "../../static/images/mainpage_576.jpg";
 import image992 from "../../static/images/mainpage_992.jpg";
