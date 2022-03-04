@@ -11,59 +11,26 @@ import {
   Button,
   Badge,
   Spinner,
-  Message,
 } from "theme-ui";
 import { API } from "../../static/config";
 import thumbnail from "../../static/images/thumbnail.jpg";
 import { Flex } from "theme-ui";
 import Score from "../components/Score";
 import Actions from "../components/Actions";
+import useFetch from "../hooks/useFetch";
+import Error from "../components/Error";
 
 const MediaView = () => {
   const params = useParams();
   const navigate = useNavigate();
   const id = params.id;
-  const [media, setMedia] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const abortC = new AbortController();
-
-    const fetchMedia = async () => {
-      try {
-        const response = await fetch(
-          `${API.url}/3/movie/${id}?api_key=${API.key}`,
-          { signal: abortC.signal }
-        );
-        if (response.ok) {
-          const mediaResponse = await response.json();
-
-          setMedia(() => {
-            return mediaResponse;
-          });
-
-          setIsLoading(() => {
-            return true;
-          });
-        }
-      } catch {
-      } finally {
-        setIsLoading(() => {
-          return false;
-        });
-      }
-    };
-
-    fetchMedia();
-
-    return () => {
-      abortC.abort();
-    };
-  }, [id]);
+  const { data, loading, error } = useFetch(
+    `${API.url}/3/movie/${id}?api_key=${API.key}`
+  );
 
   return (
     <Container p={4} sx={{ variant: "container.md" }}>
-      {media !== null && !isLoading ? (
+      {data !== null && !loading && (
         <Box>
           <Grid
             gap={4}
@@ -74,8 +41,8 @@ const MediaView = () => {
             <Box>
               <Image
                 src={
-                  media.poster_path !== null
-                    ? `${API.posterLg}${media.poster_path}`
+                  data.poster_path !== null
+                    ? `${API.posterLg}${data.poster_path}`
                     : thumbnail
                 }
                 sx={{
@@ -97,8 +64,8 @@ const MediaView = () => {
                   fontSize: [3, 4],
                 }}
               >
-                {media.title}&nbsp;
-                {media.release_date && (
+                {data.title}&nbsp;
+                {data.release_date && (
                   <Box
                     as="span"
                     mt={1}
@@ -109,15 +76,15 @@ const MediaView = () => {
                       fontSize: [1, 2],
                     }}
                   >
-                    ({media.release_date})
+                    ({data.release_date})
                   </Box>
                 )}
               </Heading>
               <Box my={3}>
-                <Actions item={media} />
+                <Actions item={data} />
               </Box>
               <Score
-                score={(media.vote_average / 10) * 100}
+                score={(data.vote_average / 10) * 100}
                 text="Community rating: "
               />
               <Flex
@@ -127,7 +94,7 @@ const MediaView = () => {
                   flexWrap: "wrap",
                 }}
               >
-                {media.genres.map((item) => {
+                {data.genres?.map((item) => {
                   return (
                     <Badge
                       p={2}
@@ -148,7 +115,7 @@ const MediaView = () => {
                   fontSize: 2,
                 }}
               >
-                {media.overview}
+                {data.overview}
               </Paragraph>
             </Box>
           </Grid>
@@ -172,7 +139,9 @@ const MediaView = () => {
             </Button>
           </Flex>
         </Box>
-      ) : isLoading ? (
+      )}
+
+      {loading && (
         <Flex
           p={4}
           sx={{
@@ -182,16 +151,9 @@ const MediaView = () => {
         >
           <Spinner />
         </Flex>
-      ) : (
-        <Container
-          sx={{
-            variant: "container.full",
-          }}
-          p={4}
-        >
-          <Message variant="message.primary">Failed to load the data!</Message>
-        </Container>
       )}
+
+      {data === null && !loading && <Error message={error} />}
     </Container>
   );
 };

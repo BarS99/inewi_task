@@ -2,8 +2,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Label, Select, Box, Container, Grid, Heading, Button } from "theme-ui";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { genreListState, movieListState } from "../abstract/MovieContext";
+import {
+  genreListState,
+  movieListFiltersSelector,
+} from "../abstract/MovieContext";
 import { API } from "../../static/config";
+import useFetch from "../hooks/useFetch";
 
 const generateYears = (start, end) => {
   const years = [];
@@ -16,8 +20,10 @@ const generateYears = (start, end) => {
 };
 
 const Filters = () => {
-  const setMovieList = useSetRecoilState(movieListState);
+  const setMovieListFilters = useSetRecoilState(movieListFiltersSelector);
   const [genreList, setGenreList] = useRecoilState(genreListState);
+  const { data } = useFetch(`${API.url}/3/genre/movie/list?api_key=${API.key}`);
+
   const [genre, setGenre] = useState("");
   const [year, setYear] = useState("");
   const [includeAdult, setIncludeAdult] = useState("false");
@@ -29,31 +35,18 @@ const Filters = () => {
     const data = new FormData(e.target);
     const paramsString = new URLSearchParams(data).toString();
 
-    setMovieList((prev) => {
-      return { ...prev, filters: paramsString };
+    setMovieListFilters(() => {
+      return paramsString;
     });
   };
 
   useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await fetch(
-          `${API.url}/3/genre/movie/list?api_key=${API.key}`
-        );
-        if (response.ok) {
-          const list = await response.json();
-
-          setGenreList((prev) => {
-            return [...list.genres];
-          });
-        } else {
-          throw new Error("Failed to load the movies!");
-        }
-      } catch {}
-    };
-
-    fetchGenres();
-  }, [setGenreList]);
+    if (data) {
+      setGenreList(() => {
+        return data.genres;
+      });
+    }
+  }, [data, setGenreList]);
 
   return (
     <Container

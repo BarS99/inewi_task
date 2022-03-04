@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { API } from "../../static/config";
 import { Container, Image, Box } from "theme-ui";
 import image576 from "../../static/images/mainpage_576.jpg";
@@ -7,50 +7,29 @@ import image992 from "../../static/images/mainpage_992.jpg";
 import image1920 from "../../static/images/mainpage_1920.jpg";
 import Filters from "../components/Filters";
 import MediaSection from "../components/MediaSection";
-import { useRecoilState } from "recoil";
-import { movieListState } from "../abstract/MovieContext";
+import useFetch from "../hooks/useFetch";
+import {
+  movieListState,
+  movieListFiltersSelector,
+  movieListSortSelector,
+} from "../abstract/MovieContext";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const Index = () => {
   const [movieList, setMovieList] = useRecoilState(movieListState);
-  const [isLoading, setIsLoading] = useState(true);
-  const { filters, sort } = movieList;
+  const filters = useRecoilValue(movieListFiltersSelector);
+  const sort = useRecoilValue(movieListSortSelector);
+  const { data, loading, error } = useFetch(
+    `${API.url}/3/discover/movie?api_key=${API.key}&${filters}&${sort}`
+  );
 
   useEffect(() => {
-    const abortC = new AbortController();
-
-    const fetchMovies = async () => {
-      try {
-        setIsLoading(() => {
-          return true;
-        });
-
-        const response = await fetch(
-          `${API.url}/3/discover/movie?api_key=${API.key}&${filters}&${sort}`,
-          { signal: abortC.signal }
-        );
-        if (response.ok) {
-          const list = await response.json();
-
-          setMovieList((prev) => {
-            return { ...prev, results: list.results };
-          });
-        } else {
-          throw new Error("Failed to load the movies!");
-        }
-      } catch {
-      } finally {
-        setIsLoading(() => {
-          return false;
-        });
-      }
-    };
-
-    fetchMovies();
-
-    return () => {
-      abortC.abort();
-    };
-  }, [filters, sort, setMovieList]);
+    if (data) {
+      setMovieList((prev) => {
+        return { ...prev, results: data.results };
+      });
+    }
+  }, [data, filters, sort, setMovieList]);
 
   return (
     <Container sx={{ variant: "container.full" }}>
@@ -71,8 +50,9 @@ const Index = () => {
       </Box>
       <MediaSection
         title="Trending now"
-        list={movieList}
-        isLoading={isLoading}
+        list={movieList.results}
+        loading={loading}
+        error={error}
       />
     </Container>
   );

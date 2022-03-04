@@ -1,13 +1,50 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export const movieListState = atom({
   key: "movieListState",
-  default: {
-    results: [],
-    favorite: [],
-    toWatch: [],
-    filters: "",
-    sort: "",
+  default: [],
+});
+
+export const movieListSelector = selector({
+  key: "movieListSelector",
+  get: ({ get }) => {
+    const result = get(movieListState);
+
+    return result;
+  },
+});
+
+export const movieListFiltersState = atom({
+  key: "movieListFiltersState",
+  default: "",
+});
+
+export const movieListFiltersSelector = selector({
+  key: "movieListFiltersSelector",
+  get: ({ get }) => {
+    const result = get(movieListFiltersState);
+
+    return result;
+  },
+  set: ({ set }, value) => {
+    set(movieListFiltersState, value);
+  },
+});
+
+export const movieListSortState = atom({
+  key: "movieListSortState",
+  default: "",
+});
+
+export const movieListSortSelector = selector({
+  key: "movieListSortSelector",
+  get: ({ get }) => {
+    const result = get(movieListSortState);
+
+    return result;
+  },
+  set: ({ set }, value) => {
+    set(movieListSortState, value);
   },
 });
 
