@@ -3,10 +3,21 @@ import { useState, useEffect } from "react";
 import { Box, Label, Input } from "theme-ui";
 import { API } from "../../static/config";
 import Autocomplete from "./Autocomplete";
+import useDebounce from "../hooks/useDebounce";
 
 const SearchEngine = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [movieName, setMovieName] = useState("");
+  const [movieNameSearch, setMovieNameSearch] = useState("");
+  useDebounce(
+    () => {
+      setMovieNameSearch(() => {
+        return movieName;
+      });
+    },
+    500,
+    [movieName]
+  );
 
   const handleMovieChange = (e) => {
     e.preventDefault();
@@ -21,10 +32,16 @@ const SearchEngine = () => {
 
     const fetchSearchResults = async () => {
       try {
-        if (movieName.length < 3) return;
+        if (movieNameSearch.length < 3) {
+          setSearchResults(() => {
+            return [];
+          });
+
+          return;
+        }
 
         const response = await fetch(
-          `${API.url}/3/search/movie?api_key=${API.key}&query=${movieName}&limit=1`,
+          `${API.url}/3/search/movie?api_key=${API.key}&query=${movieNameSearch}&limit=1`,
           {
             signal: abortC.signal,
           }
@@ -53,7 +70,7 @@ const SearchEngine = () => {
     return () => {
       abortC.abort();
     };
-  }, [movieName]);
+  }, [movieNameSearch]);
 
   return (
     <Box>
