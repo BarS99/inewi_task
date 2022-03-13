@@ -28,6 +28,7 @@ export const movieListFiltersSelector = selector({
   },
   set: ({ set }, value) => {
     set(movieListFiltersState, value);
+    set(movieListState, []);
   },
 });
 
@@ -45,6 +46,7 @@ export const movieListSortSelector = selector({
   },
   set: ({ set }, value) => {
     set(movieListSortState, value);
+    set(movieListState, []);
   },
 });
 
