@@ -4,6 +4,13 @@ const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [toggleRefetch, setToggleRefetch] = useState(false);
+
+  const refetch = () => {
+    setToggleRefetch((prev) => {
+      return !prev;
+    });
+  };
 
   useEffect(() => {
     const abortC = new AbortController();
@@ -45,9 +52,9 @@ const useFetch = (url) => {
     return () => {
       abortC.abort();
     };
-  }, [url]);
+  }, [url, toggleRefetch]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 };
 
 export default useFetch;

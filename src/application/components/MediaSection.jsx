@@ -32,25 +32,25 @@ const MediaSection = ({ list, title, loading, error, incrementPagination }) => {
           minHeight: "100vh",
         }}
       >
-        {list?.length > 0 && !loading && (
-          <>
-            <MediaList list={list} title="Trending now" />
-            <Box
-              pb={4}
+        {list?.length > 0 && <MediaList list={list} title="Trending now" />}
+
+        {!loading && (
+          <Box
+            pb={4}
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Button
+              p={2}
               sx={{
-                textAlign: "center",
+                variant: "buttons.primary",
               }}
+              onClick={incrementPagination}
             >
-              <Button
-                p={2}
-                sx={{
-                  variant: "buttons.primary",
-                }}
-              >
-                Load more
-              </Button>
-            </Box>
-          </>
+              Load more
+            </Button>
+          </Box>
         )}
 
         {loading && (
@@ -59,12 +59,6 @@ const MediaSection = ({ list, title, loading, error, incrementPagination }) => {
             sx={{
               justifyContent: "center",
               alignItems: "flex-start",
-              position: "absolute",
-              backgroundColor: "background",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
             }}
           >
             <Spinner />

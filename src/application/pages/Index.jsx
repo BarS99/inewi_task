@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { API } from "../../static/config";
 import { Container, Image, Box } from "theme-ui";
 import image576 from "../../static/images/mainpage_576.jpg";
@@ -16,27 +17,45 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const Index = () => {
+  const location = useLocation;
   const [movieList, setMovieList] = useRecoilState(movieListState);
   const filters = useRecoilValue(movieListFiltersSelector);
   const sort = useRecoilValue(movieListSortSelector);
   const [pagination, setPagination] = useState(1);
-  const { data, loading, error, triggerFetch } = useFetch(
-    `${API.url}/3/discover/movie?api_key=${API.key}&${filters}&${sort}`
+  const { data, loading, error } = useFetch(
+    `${API.url}/3/discover/movie?api_key=${API.key}${
+      filters?.length ? "&" + filters : ""
+    }${sort?.length ? "&" + sort : ""}&page=${pagination}`
   );
 
   const incrementPagination = () => {
     setPagination((prev) => {
-      return prev++;
+      return prev + 1;
     });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    return () => {
+      setMovieList(() => {
+        return [];
+      });
+    };
+  }, [location, setMovieList]);
+
+  useLayoutEffect(() => {
     if (data) {
       setMovieList((prev) => {
-        return { ...prev, results: data.results };
+        let list = [];
+        if (prev.results && data.page > 1) {
+          list = [...prev.results, ...data.results];
+        } else {
+          list = [...data.results];
+        }
+
+        return { ...prev, results: list };
       });
     }
-  }, [data, filters, sort, setMovieList]);
+  }, [data, setMovieList]);
 
   return (
     <Container sx={{ variant: "container.full" }}>
@@ -60,6 +79,7 @@ const Index = () => {
         list={movieList.results}
         loading={loading}
         error={error}
+        incrementPagination={incrementPagination}
       />
     </Container>
   );
