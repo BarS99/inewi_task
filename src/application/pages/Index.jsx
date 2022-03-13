@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { API } from "../../static/config";
 import { Container, Image, Box } from "theme-ui";
@@ -34,7 +34,7 @@ const Index = () => {
     });
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     return () => {
       setMovieList(() => {
         return [];
@@ -42,7 +42,7 @@ const Index = () => {
     };
   }, [location, setMovieList]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (data) {
       setMovieList((prev) => {
         let list = [];
