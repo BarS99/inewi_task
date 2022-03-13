@@ -32,6 +32,27 @@ export const movieListFiltersSelector = selector({
   },
 });
 
+export const movieListFiltersAsParamsSelector = selector({
+  key: "movieListFiltersAsParamsSelector",
+  get: ({ get }) => {
+    const data = get(movieListFiltersState);
+
+    let result = [];
+
+    for (let key in data) {
+      if (data[key]?.length) {
+        result.push(`${key}=${data[key]}`);
+      }
+    }
+
+    return result.join("&");
+  },
+  set: ({ set }, value) => {
+    set(movieListFiltersState, value);
+    set(movieListState, []);
+  },
+});
+
 export const movieListSortState = atom({
   key: "movieListSortState",
   default: "",

@@ -1,25 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Select } from "theme-ui";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { movieListSortSelector } from "../abstract/MovieContext";
 
 const Sort = () => {
-  const setMovieListSort = useSetRecoilState(movieListSortSelector);
-  const [sort, setSort] = useState("");
+  const [movieListSort, setMovieListSort] = useRecoilState(
+    movieListSortSelector
+  );
 
   const handleSort = (e) => {
-    setSort(() => {
-      return e.target.value;
-    });
-
     setMovieListSort(() => {
-      return `sort_by=${e.target.value}`;
+      return e.target.value;
     });
   };
 
   return (
     <Box>
-      <Select name="sort_by" id="sort" value={sort} onChange={handleSort}>
+      <Select
+        name="sort_by"
+        id="sort"
+        value={movieListSort}
+        onChange={handleSort}
+      >
         <option value="">Sort results by</option>
         <option value="popularity.desc">Popularity descending</option>
         <option value="popularity.asc">Popularity ascending</option>

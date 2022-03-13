@@ -11,7 +11,7 @@ import MediaSection from "../components/MediaSection";
 import useFetch from "../hooks/useFetch";
 import {
   movieListState,
-  movieListFiltersSelector,
+  movieListFiltersAsParamsSelector,
   movieListSortSelector,
 } from "../abstract/MovieContext";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -19,13 +19,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 const Index = () => {
   const location = useLocation;
   const [movieList, setMovieList] = useRecoilState(movieListState);
-  const filters = useRecoilValue(movieListFiltersSelector);
+  const filters = useRecoilValue(movieListFiltersAsParamsSelector);
   const sort = useRecoilValue(movieListSortSelector);
   const [pagination, setPagination] = useState(1);
   const { data, loading, error } = useFetch(
     `${API.url}/3/discover/movie?api_key=${API.key}${
       filters?.length ? "&" + filters : ""
-    }${sort?.length ? "&" + sort : ""}&page=${pagination}`
+    }${sort?.length ? "&sort_by=" + sort : ""}&page=${pagination}`
   );
 
   const incrementPagination = () => {

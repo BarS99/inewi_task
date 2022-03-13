@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { useState, useEffect, useRef } from "react";
 import { Label, Select, Box, Container, Grid, Heading, Button } from "theme-ui";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   genreListSelector,
   movieListFiltersSelector,
@@ -20,23 +20,31 @@ const generateYears = (start, end) => {
 };
 
 const Filters = () => {
-  const setMovieListFilters = useSetRecoilState(movieListFiltersSelector);
+  const [movieListFilters, setMovieListFilters] = useRecoilState(
+    movieListFiltersSelector
+  );
   const [genreList, setGenreList] = useRecoilState(genreListSelector);
   const { data } = useFetch(`${API.url}/3/genre/movie/list?api_key=${API.key}`);
 
-  const [genre, setGenre] = useState("");
-  const [year, setYear] = useState("");
-  const [includeAdult, setIncludeAdult] = useState("false");
+  const [genre, setGenre] = useState(movieListFilters.with_genres);
+  const [year, setYear] = useState(movieListFilters.year);
+  const [includeAdult, setIncludeAdult] = useState(
+    movieListFilters.include_adult
+  );
   const button = useRef(null);
 
   const submit = (e) => {
     e.preventDefault();
 
     const data = new FormData(e.target);
-    const paramsString = new URLSearchParams(data).toString();
+    const result = [];
+
+    for (const key of data.keys()) {
+      result[key] = data.get(key);
+    }
 
     setMovieListFilters(() => {
-      return paramsString;
+      return result;
     });
   };
 
