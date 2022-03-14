@@ -1,5 +1,5 @@
 export const API = {
-  key: "07110192b3fd8b432cc796b4c48dd507",
+  key: "e003527dc120ac9c047140a2d1870a10",
   url: "https://api.themoviedb.org",
   posterLg: "https://image.tmdb.org/t/p/w780",
   poster: "https://image.tmdb.org/t/p/w500",
