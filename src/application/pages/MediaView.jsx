@@ -40,7 +40,7 @@ const MediaView = () => {
             <Box>
               <Image
                 src={
-                  data.poster_path !== null
+                  data.poster_path !== null && !data.adult
                     ? `${API.posterLg}${data.poster_path}`
                     : thumbnail
                 }

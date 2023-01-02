@@ -32,7 +32,7 @@ const Media = ({ item }) => {
         >
           <Image
             src={
-              item.poster_path !== null
+              item.poster_path !== null && !item.adult
                 ? `${API.poster}${item.poster_path}`
                 : thumbnail
             }
